@@ -13,14 +13,14 @@ def voiceAssistant():
     while(text!="exit"):
         with sr.Microphone() as source: 
             print("Speak something...")
-            output_text.set(output_text.get()+"Speak something..."+"\n")
+            output_text.set("Speak something..."+"\n")
             voice.say("Speak something...")
             voice.runAndWait()
             try:
                 audio_data = recognizer.listen(source, timeout=5) 
             except sr.WaitTimeoutError:
                 print("Timeout: No speech detected after 5 seconds")
-                output_text.set(output_text.get() + "Timeout"+"\n")
+                output_text.set("Timeout"+"\n")
                 voice.say("Timeout")
                 voice.runAndWait()
 
@@ -28,43 +28,49 @@ def voiceAssistant():
         try:
             text = recognizer.recognize_google(audio_data)
             print("You said:", text)
-            output_text.set(output_text.get()+"You said: "+text+"\n")
+            output_text.set("You said: "+text+"\n")
             if text=="hello" or text=="hi":
                 response = "Hi, I am voice Assistant"
                 print("System:", response)
-                output_text.set(output_text.get()+"System: "+response+"\n")
+                output_text.set("System: "+response+"\n")
                 voice.say("Hi, I am voice Assistant")
                 voice.runAndWait()
                 break
-            if text=="tell me time" or text=="time":
+            elif text=="tell me time" or text=="time":
                 time = datetime.now().time()
                 print(time)
-                output_text.set( output_text.get()+str(time)+"\n")
+                output_text.set( str(time)+"\n")
                 voice.say(time)
                 voice.runAndWait()
                 break
-            if text=="tell me date" or text=="day" or text=="date":
+            elif text=="tell me date" or text=="day" or text=="date":
                 date = datetime.now().date()
                 print(date)
-                output_text.set( output_text.get()+str(date)+"\n")
+                output_text.set( str(date)+"\n")
                 voice.say(date)
                 voice.runAndWait()
                 break
-            if text.startswith("search for"):
+            elif text.startswith("search for"):
                 query = text[11:]
                 for j in search(query, tld="co.in", num=10, stop=10, pause=2):
                     print(j)
                     output_text.set( output_text.get()+j +"\n")
                 break
-
+            elif text=="good bye" or text=="bye":
+                response = "feel free to reach out any time! Good luck"
+                print("System:", response)
+                output_text.set( "System: " + response + "\n")
+                voice.say(response)
+                voice.runAndWait()
+                break
         except sr.UnknownValueError:
             print("Sorry, could not understand audio.")
-            output_text.set( output_text.get()+"Sorry, could not understand audio."+"\n")
+            output_text.set("Sorry, could not understand audio."+"\n")
             voice.say("Sorry, could not understand audio.")
             voice.runAndWait()
         except sr.RequestError as e:
             print("Error: Could not request results from Google Speech Recognition service;")
-            output_text.set(output_text.get()+"Error: Could not request results from Google Speech Recognition service;"+"\n")
+            output_text.set("Error: Could not request results from Google Speech Recognition service;"+"\n")
             voice.say("Error: Could not request results from Google Speech Recognition service;")
             voice.runAndWait()
         root.after(100, update_gui)
