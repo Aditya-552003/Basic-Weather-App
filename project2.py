@@ -1,15 +1,21 @@
 import random
 import string as st
-char=""
-len=int(input("enter size of password: "))
-letters=input("include letters?(y/n): ")
-numbers=input("include numbers?(y/n): ")
-symbols=input("include symbols?(y/n): ")
-if letters=="y":
-    char+=st.ascii_letters
-if letters=="y":
-    char+=st.digits
-if letters=="y":
-    char+=st.punctuation
-password="".join(random.choices(char,k=len))
-print("your password is: ",password)
+
+char = ""
+length = int(input("Enter size of password: "))
+letters = input("Include letters? (y/n): ")
+numbers = input("Include numbers? (y/n): ")
+symbols = input("Include symbols? (y/n): ")
+
+if letters == "y":
+    char += st.ascii_letters
+if numbers == "y":
+    char += st.digits
+if symbols == "y":
+    char += st.punctuation
+ 
+if char: 
+    password = "".join(random.choices(char, k=length))
+    print("Your password is:", password)
+else:
+    print("You must include at least one type of character for the password!")
